@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './styles/App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <nav className="navbar">
+                <div className="dropdown">
+                    <button className="dropbtn">Menu 1</button>
+                    <div className="dropdown-content">
+                        <button>Option 1</button>
+                        <button>Option 2</button>
+                        <button>Option 3</button>
+                        <button>Option 4</button>
+                        <button>Option 5</button>
+                    </div>
+                </div>
+
+                <div className="dropdown">
+                    <button className="dropbtn">Menu 2</button>
+                    <div className="dropdown-content">
+                        <button>Option 1</button>
+                        <button>Option 2</button>
+                        <button>Option 3</button>
+                        <button>Option 4</button>
+                        <button>Option 5</button>
+                    </div>
+                </div>
+
+                <div className="dropdown">
+                    <button className="dropbtn">Menu 3</button>
+                    <div className="dropdown-content">
+                        <button>Option 1</button>
+                        <button>Option 2</button>
+                        <button>Option 3</button>
+                        <button>Option 4</button>
+                        <button>Option 5</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    );
 }
 
 export default App;
