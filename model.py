@@ -3,7 +3,7 @@ from sklearn.metrics import mean_squared_error
 
 class Model:
     def __init__(self):
-        self.model = GradientBoostingRegressor(n_estimators=15000, learning_rate=0.01, max_depth=8, random_state=30)
+        self.model = GradientBoostingRegressor(n_estimators=1000, learning_rate=0.01, max_depth=8, random_state=54)
 
     def train(self, X_train, y_train):
         print("Rozpoczynanie treningu modelu...")

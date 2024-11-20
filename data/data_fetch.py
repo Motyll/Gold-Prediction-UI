@@ -37,7 +37,7 @@ gold_data.columns = column_names
 gold_data['Datetime'] = pd.to_datetime(gold_data['Datetime'], errors='coerce')
 gold_data.dropna(subset=['Datetime'], inplace=True)
 
-output_file_path = 'data/gold_hourly_data_transformed.csv'
+output_file_path = 'gold_hourly_data_transformed.csv'
 gold_data.to_csv(output_file_path, index=False)
 
 print(f"Plik został zapisany jako '{output_file_path}' z poprawnym formatowaniem.")
