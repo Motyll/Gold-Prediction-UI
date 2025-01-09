@@ -10,7 +10,7 @@ interval = '1h'
 start_date = datetime.datetime.now() - pd.DateOffset(years=1)
 end_date = datetime.datetime.now()
 data_parts = []
-step = datetime.timedelta(weeks=1)  # Pobieranie w odstępach tygodniowych
+step = datetime.timedelta(weeks=1)
 current_date = start_date
 total_steps = int((end_date - start_date) / step)
 progress_bar = tqdm(total=total_steps, desc="Pobieranie danych", unit="tydzień")
@@ -24,13 +24,11 @@ while current_date < end_date:
 
 progress_bar.close()
 
-# Łączenie wszystkich fragmentów danych
 gold_data = pd.concat(data_parts)
 
 if gold_data.empty:
     raise ValueError(f"Nie udało się pobrać danych dla symbolu '{symbol}'.")
 
-# Formatowanie i zapis danych
 gold_data.reset_index(inplace=True)
 column_names = ["Datetime", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
 gold_data.columns = column_names
