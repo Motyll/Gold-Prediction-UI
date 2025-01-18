@@ -24,14 +24,22 @@ st.sidebar.subheader("Kurs wymiany walut")
 @st.cache_data
 def get_exchange_rates():
     tickers = ["USDEUR=X", "USDPLN=X", "USDGBP=X"]
-    rates = yf.download(tickers, period="1d")['Close'].iloc[-1]
-    return {
-        "EUR": rates["USDEUR=X"],
-        "PLN": rates["USDPLN=X"],
-        "GBP": rates["USDGBP=X"],
-        "USD": 1.0
-    }
-
+    try:
+        rates = yf.download(tickers, period="1d")['Close'].iloc[-1]
+        return {
+            "EUR": rates["USDEUR=X"],
+            "PLN": rates["USDPLN=X"],
+            "GBP": rates["USDGBP=X"],
+            "USD": 1.0
+        }
+    except Exception as e:
+        st.error(f"Nie udało się pobrać danych kursów wymiany walut. Błąd: {e}")
+        return {
+            "EUR": None,
+            "PLN": None,
+            "GBP": None,
+            "USD": 1.0
+        }
 
 # Pobierz kursy wymiany walut
 exchange_rates = get_exchange_rates()
@@ -76,10 +84,17 @@ def retrain_model():
 # Obsługa przycisku do treningu modelu
 if st.sidebar.button("Uruchom uczenie modelu"):
     with st.spinner("Uczenie modelu, proszę czekać..."):
-        model, scaler_X, scaler_y, X, y, mse_test = retrain_model()
+        # Wywołanie funkcji retrain_model
+        model, scaler_X, scaler_y, X, y, metrics = retrain_model()
+
+        # Wyświetlenie metryk w aplikacji Streamlit
         st.success("Model został ponownie wytrenowany!")
-        st.title("Predykcja cen złota na następny dzień")
-        st.write(f"Średni błąd kwadratowy (MSE) na danych testowych: {mse_test:.4f}")
+        st.title("Ewaluacja modelu")
+        st.write("Metryki modelu przewidującego cenę złota:")
+        st.write(f"- **Mean Squared Error (MSE):** {metrics['MSE']:.4f}")
+        st.write(f"- **Root Mean Squared Error (RMSE):** {metrics['RMSE']:.4f}")
+        st.write(f"- **Mean Absolute Error (MAE):** {metrics['MAE']:.4f}")
+        st.write(f"- **R-squared (R²):** {metrics['R2']:.4f}")
 
         # Pobranie bieżącej ceny złota
         gold = yf.Ticker("GC=F")
