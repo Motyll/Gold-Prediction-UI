@@ -5,15 +5,15 @@ from tqdm import tqdm
 
 
 class GoldDataFetcher:
-    def __init__(self, symbol="GC=F", interval="1h", period="1y", output_file="gold_hourly_data.csv"):
+    def __init__(self, symbol="GC=F", interval="1h", years=2, output_file="gold_hourly_data.csv"):
         self.symbol = symbol
         self.interval = interval
-        self.period = period
+        self.years = years
         self.output_file = output_file
 
     def fetch_data(self):
-        """Pobiera dane o cenach złota z serwisu Yahoo Finance."""
-        start_date = datetime.datetime.now() - pd.DateOffset(years=1)
+        max_days = 730  # 2 lata = 730 dni
+        start_date = datetime.datetime.now() - datetime.timedelta(days=max_days)
         end_date = datetime.datetime.now()
         data_parts = []
         step = datetime.timedelta(weeks=1)
@@ -45,6 +45,7 @@ class GoldDataFetcher:
 
         return gold_data
 
-data_fetcher = GoldDataFetcher(output_file="gold_hourly_data_transformed.csv")
+
+data_fetcher = GoldDataFetcher(output_file="gold_hourly_data_transformed.csv", years=2)
 gold_data = data_fetcher.fetch_data()
 gold_data.head()
