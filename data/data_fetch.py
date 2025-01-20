@@ -27,11 +27,7 @@ class GoldDataFetcher:
             next_date = min(current_date + step, end_date)
             try:
                 part_data = yf.download(
-                    self.symbol,
-                    start=current_date.strftime('%Y-%m-%d'),
-                    end=next_date.strftime('%Y-%m-%d'),
-                    interval=self.interval,
-                    progress=False
+                    self.symbol, start=current_date, end=next_date, interval=self.interval, progress=False
                 )
                 if not part_data.empty:
                     data_parts.append(part_data)
@@ -49,20 +45,12 @@ class GoldDataFetcher:
 
         gold_data = pd.concat(data_parts)
 
-        # Reset indeksu
+        # Reset indeksu i ustawienie nazw kolumn
         gold_data.reset_index(inplace=True)
-
-        # Ustalanie odpowiednich nazw kolumn
-        if 'Date' in gold_data.columns:
-            gold_data.columns = ["Datetime", "Close", "High", "Low", "Open", "Volume"]
-        elif 'Datetime' in gold_data.columns:
-            gold_data.columns = ["Datetime", "Close", "High", "Low", "Open", "Volume"]
+        if len(gold_data.columns) >= 7:
+            gold_data.columns = ["Datetime", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
         else:
             raise ValueError("Pobrane dane mają nieprawidłowy format lub za mało kolumn.")
-
-        # Usuwanie kolumny "Adj Close" jeśli istnieje
-        if 'Adj Close' in gold_data.columns:
-            gold_data.drop(columns=['Adj Close'], inplace=True)
 
         # Usuwanie błędnych i brakujących danych
         gold_data['Datetime'] = pd.to_datetime(gold_data['Datetime'], errors='coerce')
@@ -75,7 +63,6 @@ class GoldDataFetcher:
         return gold_data
 
 
-# Przykładowe użycie
 data_fetcher = GoldDataFetcher(output_file="gold_hourly_data_transformed.csv", years=2)
 gold_data = data_fetcher.fetch_data()
-print(gold_data.head())
+gold_data.head()
