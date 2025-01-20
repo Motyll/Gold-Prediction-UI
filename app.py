@@ -55,10 +55,10 @@ selected_currency = st.sidebar.selectbox("Wybierz walutę:", options=exchange_ra
 exchange_rate = exchange_rates[selected_currency]
 st.sidebar.write(f"Aktualny kurs wymiany: 1 USD = {exchange_rate:.2f} {selected_currency}")
 
-def fetch_gold_data():
-    data_fetcher = GoldDataFetcher(output_file="gold_hourly_data_transformed.csv")
-    gold_data = data_fetcher.fetch_data()
-    return gold_data
+# def fetch_gold_data():
+#     data_fetcher = GoldDataFetcher(output_file="gold_hourly_data_transformed.csv")
+#     gold_data = data_fetcher.fetch_data()
+#     return gold_data
 
 def retrain_model():
     filepath = 'gold_hourly_data_transformed.csv'
