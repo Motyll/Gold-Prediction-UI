@@ -15,7 +15,6 @@ class GoldDataFetcher:
         start_date = datetime.datetime.now() - datetime.timedelta(days=max_days)
         end_date = datetime.datetime.now()
 
-        # Pobieranie danych partiami, ponieważ API Yahoo Finance ma ograniczenia czasowe
         data_parts = []
         step = datetime.timedelta(weeks=1)
         current_date = start_date
@@ -31,32 +30,35 @@ class GoldDataFetcher:
                 )
                 if not part_data.empty:
                     data_parts.append(part_data)
+                else:
+                    print(f"Pobrano pusty zestaw danych dla okresu: {current_date} - {next_date}")
             except Exception as e:
-                print(f"Błąd podczas pobierania danych: {e}")
+                print(f"Błąd podczas pobierania danych dla okresu {current_date} - {next_date}: {e}")
 
             current_date = next_date
             progress_bar.update(1)
 
         progress_bar.close()
 
-        # Łączenie wszystkich pobranych części w jeden DataFrame
         if not data_parts:
             raise ValueError(f"Nie udało się pobrać żadnych danych dla symbolu '{self.symbol}'.")
 
         gold_data = pd.concat(data_parts)
 
-        # Reset indeksu i ustawienie nazw kolumn
+        # Debugowanie struktury danych
+        print("Struktura pobranych danych:")
+        print(gold_data.head())
+        print(f"Liczba kolumn: {len(gold_data.columns)}")
+
         gold_data.reset_index(inplace=True)
         if len(gold_data.columns) >= 7:
             gold_data.columns = ["Datetime", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
         else:
             raise ValueError("Pobrane dane mają nieprawidłowy format lub za mało kolumn.")
 
-        # Usuwanie błędnych i brakujących danych
         gold_data['Datetime'] = pd.to_datetime(gold_data['Datetime'], errors='coerce')
         gold_data.dropna(subset=['Datetime'], inplace=True)
 
-        # Zapis danych do pliku
         gold_data.to_csv(self.output_file, index=False)
         print(f"Dane zostały zapisane do pliku: {self.output_file}")
 
