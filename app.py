@@ -18,7 +18,7 @@ import streamlit as st
 
 st.sidebar.header("Ustawienia")
 
-model_options = ["GradientBoosting", "RandomForest", "ExtraTrees", "CatBoost"]
+model_options = ["GradientBoosting", "RandomForest", "ExtraTrees"]
 selected_model = st.sidebar.selectbox("Wybierz model:", model_options)
 
 timeframe_options = {
