@@ -4,7 +4,7 @@ import datetime
 from tqdm import tqdm
 
 class GoldDataFetcher:
-    def __init__(self, symbol="GC=F", interval="1h", years=2, output_file="gold_hourly_data.csv"):
+    def __init__(self, symbol="GC=F", interval="1h", years=1, output_file="gold_hourly_data.csv"):
         self.symbol = symbol
         self.interval = interval
         self.years = years
