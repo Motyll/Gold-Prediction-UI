@@ -106,7 +106,6 @@ if st.sidebar.button("Uruchom uczenie modelu"):
         current_day = datetime.now()
 
         day_of_prediction = current_day.strftime("%A")
-        day_of_prediction = "Monday" #usunac
         if day_of_prediction in ["Saturday", "Sunday"]:
             st.warning(f"Prognoza cen złota dla {day_of_prediction} (weekend) nie jest możliwa. Giełda jest zamknięta.")
         else:

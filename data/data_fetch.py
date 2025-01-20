@@ -4,7 +4,7 @@ import datetime
 from tqdm import tqdm
 
 class GoldDataFetcher:
-    def __init__(self, symbol="GC=F", interval="1h", years=1, output_file="gold_hourly_data.csv"):
+    def __init__(self, symbol="GC=F", interval="1h", years=2, output_file="gold_hourly_data.csv"):
         self.symbol = symbol
         self.interval = interval
         self.years = years
@@ -30,10 +30,8 @@ class GoldDataFetcher:
                 )
                 if not part_data.empty:
                     data_parts.append(part_data)
-                else:
-                    print(f"Pobrano pusty zestaw danych dla okresu: {current_date} - {next_date}")
             except Exception as e:
-                print(f"Błąd podczas pobierania danych dla okresu {current_date} - {next_date}: {e}")
+                print(f"Błąd podczas pobierania danych: {e}")
 
             current_date = next_date
             progress_bar.update(1)
@@ -44,11 +42,6 @@ class GoldDataFetcher:
             raise ValueError(f"Nie udało się pobrać żadnych danych dla symbolu '{self.symbol}'.")
 
         gold_data = pd.concat(data_parts)
-
-        # Debugowanie struktury danych
-        print("Struktura pobranych danych:")
-        print(gold_data.head())
-        print(f"Liczba kolumn: {len(gold_data.columns)}")
 
         gold_data.reset_index(inplace=True)
         if len(gold_data.columns) >= 7:
