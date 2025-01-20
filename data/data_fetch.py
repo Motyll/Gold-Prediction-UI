@@ -27,7 +27,11 @@ class GoldDataFetcher:
             next_date = min(current_date + step, end_date)
             try:
                 part_data = yf.download(
-                    self.symbol, start=current_date, end=next_date, interval=self.interval, progress=False
+                    self.symbol,
+                    start=current_date.strftime('%Y-%m-%d'),
+                    end=next_date.strftime('%Y-%m-%d'),
+                    interval=self.interval,
+                    progress=False
                 )
                 if not part_data.empty:
                     data_parts.append(part_data)
@@ -45,24 +49,33 @@ class GoldDataFetcher:
 
         gold_data = pd.concat(data_parts)
 
-        # Reset indeksu i ustawienie nazw kolumn
+
         gold_data.reset_index(inplace=True)
-        if len(gold_data.columns) >= 7:
-            gold_data.columns = ["Datetime", "Open", "High", "Low", "Close", "Adj Close", "Volume"]
+
+
+        if 'Date' in gold_data.columns:
+            gold_data.columns = ["Datetime", "Close", "High", "Low", "Open", "Volume"]
+        elif 'Datetime' in gold_data.columns:
+            gold_data.columns = ["Datetime", "Close", "High", "Low", "Open", "Volume"]
         else:
             raise ValueError("Pobrane dane mają nieprawidłowy format lub za mało kolumn.")
 
-        # Usuwanie błędnych i brakujących danych
+
+        if 'Adj Close' in gold_data.columns:
+            gold_data.drop(columns=['Adj Close'], inplace=True)
+
+
         gold_data['Datetime'] = pd.to_datetime(gold_data['Datetime'], errors='coerce')
         gold_data.dropna(subset=['Datetime'], inplace=True)
 
-        # Zapis danych do pliku
+
         gold_data.to_csv(self.output_file, index=False)
         print(f"Dane zostały zapisane do pliku: {self.output_file}")
 
         return gold_data
 
 
+
 data_fetcher = GoldDataFetcher(output_file="gold_hourly_data_transformed.csv", years=2)
 gold_data = data_fetcher.fetch_data()
-gold_data.head()
+print(gold_data.head())
