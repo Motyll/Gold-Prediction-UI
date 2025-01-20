@@ -1,6 +1,6 @@
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor, ExtraTreesRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from catboost import CatBoostRegressor
+#from catboost import CatBoostRegressor
 
 class Model:
     def __init__(self, model_type="GradientBoosting"):
@@ -16,10 +16,10 @@ class Model:
             self.model = ExtraTreesRegressor(
                 n_estimators=500, max_depth=None, random_state=42
             )
-        elif model_type == "CatBoost":
-            self.model = CatBoostRegressor(
-                iterations=1000, learning_rate=0.01, depth=8, random_seed=42, verbose=0
-            )
+        # elif model_type == "CatBoost":
+        #     self.model = CatBoostRegressor(
+        #         iterations=1000, learning_rate=0.01, depth=8, random_seed=42, verbose=0
+        #     )
         else:
             raise ValueError(f"Nieobsługiwany typ modelu: {model_type}")
 
