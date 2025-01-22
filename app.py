@@ -128,6 +128,7 @@ if st.sidebar.button("Uruchom uczenie modelu"):
                 st.write("**Wykres cen:**")
                 plt.figure(figsize=(5, 4))
                 plt.plot([f"{hour}:00" for hour in hours], predicted_prices_usd, marker='o', color='blue', label="Cena w USD")
+                plt.axhline(y=gold_price_usd, color='red', linestyle='--', label=f"Dzisiejsza cena ({gold_price_usd:.2f} USD)")
                 plt.xticks(rotation=45)
                 plt.xlabel("Godzina")
                 plt.ylabel("Cena Złota (USD)")
