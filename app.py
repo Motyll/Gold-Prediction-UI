@@ -132,7 +132,6 @@ if st.sidebar.button("Uruchom uczenie modelu"):
                 plt.xticks(rotation=45)
                 plt.xlabel("Godzina")
                 plt.ylabel("Cena Złota (USD)")
-                plt.title(f"Przewidywane ceny na dzień: {day_of_prediction}")
                 plt.legend()
                 plt.grid(True)
                 st.pyplot(plt)
